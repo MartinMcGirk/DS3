@@ -20,6 +20,8 @@ namespace MM
 
         public GameObject normalCamera;
         public float jumpSpeed = 10f;
+
+        private bool jumping = false;
         
         [Header("Stats")] 
         [SerializeField] float movementSpeed = 5;
@@ -55,9 +57,9 @@ namespace MM
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
             var keyboard = Keyboard.current;
-            if (keyboard.spaceKey.wasPressedThisFrame)
+            if (keyboard.spaceKey.wasPressedThisFrame && !jumping)
             {
-                // rigidbody.velocity = new Vector3(0, 20, 0);
+                jumping = true;
                 projectedVelocity.y = jumpSpeed;
             }
             else
@@ -108,9 +110,18 @@ namespace MM
 
         private void OnCollisionEnter(Collision collision)
         {
+            var contact = collision.GetContact(0);
+            if (Vector3.Dot(contact.normal, Vector3.up) > 0.5)
+            {
+                jumping = false;
+            }
+
             if (collision.gameObject.CompareTag("Movable"))
             {
-                gameObject.transform.SetParent(collision.gameObject.transform, true);
+                if (Vector3.Dot(contact.normal, Vector3.up) > 0.5)
+                {
+                    gameObject.transform.SetParent(collision.gameObject.transform, true);
+                }
             }
         }
 
