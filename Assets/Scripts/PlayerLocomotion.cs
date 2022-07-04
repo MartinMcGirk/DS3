@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace MM
@@ -18,7 +19,8 @@ namespace MM
         public new Rigidbody rigidbody;
 
         public GameObject normalCamera;
-
+        public float jumpSpeed = 10f;
+        
         [Header("Stats")] 
         [SerializeField] float movementSpeed = 5;
         [SerializeField] float rotationSpeed = 10;
@@ -43,7 +45,7 @@ namespace MM
             
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
-            moveDirection.y += rigidbody.velocity.y - 10 * Time.deltaTime;
+            // moveDirection.y += rigidbody.velocity.y - 10 * Time.deltaTime;
 
 
             moveDirection.Normalize();
@@ -51,11 +53,22 @@ namespace MM
             float speed = movementSpeed;
             moveDirection *= speed;
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+
+            var keyboard = Keyboard.current;
+            if (keyboard.spaceKey.wasPressedThisFrame)
+            {
+                // rigidbody.velocity = new Vector3(0, 20, 0);
+                projectedVelocity.y = jumpSpeed;
+            }
+            else
+            {
+                projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
+            }
+            
+            // projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
             rigidbody.velocity = projectedVelocity;
 
             animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-            
-            
             if (animationHandler.canRotate)
             {
                 HandleRotation(delta);
