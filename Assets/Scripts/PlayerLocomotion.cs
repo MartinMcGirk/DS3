@@ -102,9 +102,24 @@ namespace MM
             Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
 
             myTransform.rotation = targetRotation;
-            
         }
 
         #endregion
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Movable"))
+            {
+                gameObject.transform.SetParent(collision.gameObject.transform, true);
+            }
+        }
+
+        private void OnCollisionExit(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Movable"))
+            {
+                gameObject.transform.parent = null;
+            }
+        }
     }
 }
