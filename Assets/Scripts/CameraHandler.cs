@@ -78,7 +78,9 @@ public class CameraHandler : MonoBehaviour
         targetPosition = defaultPosition;
         RaycastHit hit;
         Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
+        Debug.Log(direction);
         direction.Normalize();
+        Debug.Log(direction);
 
         if (Physics.SphereCast(cameraPivotTransform.position, cameraSphereRadius, direction, out hit, Mathf.Abs(targetPosition), ignoreLayers))
         {
