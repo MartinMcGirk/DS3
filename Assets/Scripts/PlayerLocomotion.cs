@@ -43,38 +43,8 @@ namespace MM
             float delta = Time.deltaTime;
 
             inputHandler.TickInput(delta);
-            
-            
-            moveDirection = cameraObject.forward * inputHandler.vertical;
-            moveDirection += cameraObject.right * inputHandler.horizontal;
-            // moveDirection.y += rigidbody.velocity.y - 10 * Time.deltaTime;
-
-
-            moveDirection.Normalize();
-
-            float speed = movementSpeed;
-            moveDirection *= speed;
-            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
-
-            var keyboard = Keyboard.current;
-            if (keyboard.spaceKey.wasPressedThisFrame && !jumping)
-            {
-                jumping = true;
-                projectedVelocity.y = jumpSpeed;
-            }
-            else
-            {
-                projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
-            }
-            
-            // projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
-            rigidbody.velocity = projectedVelocity;
-
-            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
-            if (animationHandler.canRotate)
-            {
-                HandleRotation(delta);
-            }
+            HandleMovement(delta);
+            HandleRollingAndSprinting(delta);
         }
 
 
@@ -104,6 +74,66 @@ namespace MM
             Quaternion targetRotation = Quaternion.Slerp(myTransform.rotation, tr, rs * delta);
 
             myTransform.rotation = targetRotation;
+        }
+
+        public void HandleMovement(float delta)
+        {
+            moveDirection = cameraObject.forward * inputHandler.vertical;
+            moveDirection += cameraObject.right * inputHandler.horizontal;
+
+            moveDirection.Normalize();
+
+            float speed = movementSpeed;
+            moveDirection *= speed;
+            Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
+
+            var keyboard = Keyboard.current;
+            if (keyboard.spaceKey.wasPressedThisFrame && !jumping)
+            {
+                jumping = true;
+                projectedVelocity.y = jumpSpeed;
+            }
+            else
+            {
+                projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
+            }
+
+            rigidbody.velocity = projectedVelocity;
+
+            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            if (animationHandler.canRotate)
+            {
+                HandleRotation(delta);
+            }
+        }
+
+        #endregion
+
+        #region Actions
+
+        public void HandleRollingAndSprinting(float delta)
+        {
+            if (animationHandler.anim.GetBool("isInteracting"))
+            {
+                return;
+            }
+
+            if (inputHandler.rolling)
+            {
+                moveDirection = cameraObject.forward * inputHandler.vertical;
+                moveDirection += cameraObject.right * inputHandler.horizontal;
+                if (inputHandler.moveAmount > 0)
+                {
+                    animationHandler.PlayTargetAnimation("Roll", true);
+                    moveDirection.y = 0;
+                    Quaternion rollRotation = Quaternion.LookRotation(moveDirection);
+                    myTransform.rotation = rollRotation;
+                }
+                //else
+                //{
+                //    animationHandler.PlayTargetAnimation("Backstep", true);
+                //}
+            }
         }
 
         #endregion
