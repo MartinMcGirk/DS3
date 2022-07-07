@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace MM
 {
@@ -16,8 +17,11 @@ namespace MM
 
         public bool b_input;
 
-        public bool rolling;
+        public bool rollFlag;
+        public bool sprintFlag;
         public bool isInteracting;
+
+        public float rollInputTimer;
 
         PlayerControls inputActions;
         CameraHandler cameraHandler;        
@@ -80,7 +84,18 @@ namespace MM
             b_input = inputActions.PlayerActions.Roll.phase == UnityEngine.InputSystem.InputActionPhase.Performed;
             if (b_input)
             {
-                rolling = true;
+                rollInputTimer += delta;
+                sprintFlag = true;
+            }
+            else
+            {
+                if (rollInputTimer > 0 && rollInputTimer < 0.5f)
+                {
+                    sprintFlag = false;
+                    rollFlag = true;
+                }
+
+                rollInputTimer = 0;
             }
         }
     } 

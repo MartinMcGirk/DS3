@@ -24,7 +24,7 @@ namespace MM
             horizontal = Animator.StringToHash("Horizontal");            
         }
         
-        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+        public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
         {
             #region Vertical
 
@@ -77,6 +77,12 @@ namespace MM
             }
 
             #endregion
+
+            if (isSprinting)
+            {
+                v = 2;
+                h = horizontalMovement;
+            }
             
             anim.SetFloat(vertical, v, 0.1f, Time.deltaTime);
             anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);

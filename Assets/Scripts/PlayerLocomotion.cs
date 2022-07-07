@@ -17,14 +17,16 @@ namespace MM
         [HideInInspector] public AnimatorHandler animationHandler;
 
         public new Rigidbody rigidbody;
+        public bool isSprinting;
 
         public GameObject normalCamera;
         public float jumpSpeed = 10f;
 
         private bool jumping = false;
-        
+
         [Header("Stats")] 
         [SerializeField] float movementSpeed = 5;
+        [SerializeField] float sprintSpeed = 7;
         [SerializeField] float rotationSpeed = 10;
         
         
@@ -42,6 +44,7 @@ namespace MM
         {
             float delta = Time.deltaTime;
 
+            // isSprinting = inputHandler.b_input;
             inputHandler.TickInput(delta);
             HandleMovement(delta);
             HandleRollingAndSprinting(delta);
@@ -78,12 +81,27 @@ namespace MM
 
         public void HandleMovement(float delta)
         {
+            if (inputHandler.rollFlag)
+            {
+                return;
+            }
+            
             moveDirection = cameraObject.forward * inputHandler.vertical;
             moveDirection += cameraObject.right * inputHandler.horizontal;
 
             moveDirection.Normalize();
 
             float speed = movementSpeed;
+            if (inputHandler.sprintFlag)
+            {
+                speed = sprintSpeed;
+                isSprinting = true;
+            }
+            else
+            {
+                isSprinting = false;
+            }
+
             moveDirection *= speed;
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
@@ -100,7 +118,7 @@ namespace MM
 
             rigidbody.velocity = projectedVelocity;
 
-            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0);
+            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
             if (animationHandler.canRotate)
             {
                 HandleRotation(delta);
@@ -118,7 +136,7 @@ namespace MM
                 return;
             }
 
-            if (inputHandler.rolling)
+            if (inputHandler.rollFlag)
             {
                 moveDirection = cameraObject.forward * inputHandler.vertical;
                 moveDirection += cameraObject.right * inputHandler.horizontal;

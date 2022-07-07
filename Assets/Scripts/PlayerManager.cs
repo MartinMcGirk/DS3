@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         inputHandler.isInteracting = anim.GetBool("isInteracting");
-        inputHandler.rolling = false;
+        inputHandler.rollFlag = false;
+        inputHandler.sprintFlag = false;
     }
 }
