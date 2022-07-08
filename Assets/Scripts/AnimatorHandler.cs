@@ -8,20 +8,21 @@ namespace MM
     public class AnimatorHandler : MonoBehaviour
     {
         public Animator anim;
-        public InputHandler inputHandler;
-        public PlayerLocomotion playerLocomotion;
+        public bool canRotate;
+
+        PlayerManager playerManager;
+        PlayerLocomotion playerLocomotion;
+
         int vertical;
         int horizontal;
-
-        public bool canRotate;
         
         public void Initialize()
         {
             anim = GetComponent<Animator>();
-            inputHandler = GetComponentInParent<InputHandler>();
             playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+            playerManager = GetComponentInParent<PlayerManager>();
             vertical = Animator.StringToHash("Vertical");
-            horizontal = Animator.StringToHash("Horizontal");            
+            horizontal = Animator.StringToHash("Horizontal");          
         }
         
         public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement, bool isSprinting)
@@ -107,7 +108,7 @@ namespace MM
 
         private void OnAnimatorMove()
         {
-            if (!inputHandler.isInteracting)
+            if (!playerManager.isInteracting)
             {
                 return;
             }

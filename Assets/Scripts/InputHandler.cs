@@ -19,31 +19,12 @@ namespace MM
 
         public bool rollFlag;
         public bool sprintFlag;
-        public bool isInteracting;
-
         public float rollInputTimer;
 
         PlayerControls inputActions;
-        CameraHandler cameraHandler;        
 
         Vector2 movementInput;
-        Vector2 cameraInput;
-
-        private void Awake()
-        {
-            cameraHandler = CameraHandler.singleton;
-        }
-
-        private void FixedUpdate()
-        {
-            float delta = Time.fixedDeltaTime;
-
-            if (cameraHandler != null)
-            {
-                cameraHandler.FollowTarget(delta);
-                cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
-            }
-        }
+        Vector2 cameraInput;        
 
         private void OnEnable()
         {

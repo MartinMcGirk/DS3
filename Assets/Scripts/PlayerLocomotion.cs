@@ -9,6 +9,7 @@ namespace MM
 {
     public class PlayerLocomotion : MonoBehaviour
     {
+        PlayerManager playerManager;
         Transform cameraObject;
         InputHandler inputHandler;
         Vector3 moveDirection;
@@ -17,14 +18,13 @@ namespace MM
         [HideInInspector] public AnimatorHandler animationHandler;
 
         public new Rigidbody rigidbody;
-        public bool isSprinting;
 
         public GameObject normalCamera;
         public float jumpSpeed = 10f;
 
         private bool jumping = false;
 
-        [Header("Stats")] 
+        [Header("Movement Stats")] 
         [SerializeField] float movementSpeed = 5;
         [SerializeField] float sprintSpeed = 7;
         [SerializeField] float rotationSpeed = 10;
@@ -35,21 +35,11 @@ namespace MM
             rigidbody = GetComponent<Rigidbody>();
             inputHandler = GetComponent<InputHandler>();
             animationHandler = GetComponentInChildren<AnimatorHandler>();
+            playerManager = GetComponent<PlayerManager>();
             cameraObject = Camera.main.transform;
             myTransform = transform;
             animationHandler.Initialize();
         }
-
-        private void Update()
-        {
-            float delta = Time.deltaTime;
-
-            // isSprinting = inputHandler.b_input;
-            inputHandler.TickInput(delta);
-            HandleMovement(delta);
-            HandleRollingAndSprinting(delta);
-        }
-
 
         #region Movement
 
@@ -68,8 +58,6 @@ namespace MM
             if (targetDirection == Vector3.zero)
             {
                 targetDirection = myTransform.forward;
-                
-
             }
 
             float rs = rotationSpeed;
@@ -95,11 +83,11 @@ namespace MM
             if (inputHandler.sprintFlag)
             {
                 speed = sprintSpeed;
-                isSprinting = true;
+                playerManager.isSprinting = true;
             }
             else
             {
-                isSprinting = false;
+                playerManager.isSprinting = false;
             }
 
             moveDirection *= speed;
@@ -118,7 +106,7 @@ namespace MM
 
             rigidbody.velocity = projectedVelocity;
 
-            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+            animationHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
             if (animationHandler.canRotate)
             {
                 HandleRotation(delta);
