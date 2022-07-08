@@ -34,12 +34,12 @@ public class PlayerManager : MonoBehaviour
         inputHandler.TickInput(delta);
         playerLocomotion.HandleMovement(delta);
         playerLocomotion.HandleRollingAndSprinting(delta);
+        playerLocomotion.HandleFalling(delta, playerLocomotion.moveDirection);
     }
 
     private void FixedUpdate()
     {
         float delta = Time.fixedDeltaTime;
-        Debug.Log(cameraHandler);
 
         if (cameraHandler != null)
         {
@@ -53,5 +53,9 @@ public class PlayerManager : MonoBehaviour
         inputHandler.rollFlag = false;
         inputHandler.sprintFlag = false;
         // isSprinting = inputHandler.b_input;
+        if (isInAir)
+        {
+            playerLocomotion.inAirTimer += Time.deltaTime;
+        }
     }
 }
