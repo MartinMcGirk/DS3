@@ -50,7 +50,6 @@ namespace MM
             animationHandler.Initialize();
             playerManager.isGrounded = true;
             ignoreForGroundCheck = ~(1 << 8 | 1 << 11);
-            
         }
 
         #region Movement
@@ -105,16 +104,16 @@ namespace MM
             moveDirection *= speed;
             Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
 
-            var keyboard = Keyboard.current;
-            if (keyboard.spaceKey.wasPressedThisFrame && !jumping)
-            {
-                jumping = true;
-                projectedVelocity.y = jumpSpeed;
-            }
-            else
-            {
-                projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
-            }
+            //var keyboard = Keyboard.current;
+            //if (keyboard.spaceKey.wasPressedThisFrame && !jumping)
+            //{
+            //    jumping = true;
+            //    projectedVelocity.y = jumpSpeed;
+            //}
+            //else
+            //{
+            //    projectedVelocity.y = rigidbody.velocity.y - 10 * Time.deltaTime;
+            //}
 
             rigidbody.velocity = projectedVelocity;
 
@@ -159,7 +158,9 @@ namespace MM
             playerManager.isGrounded = false;
             RaycastHit hit;
             Vector3 origin = myTransform.position;
+            
             origin.y += groundDetectionRayStartPoint;
+            Debug.DrawRay(origin, myTransform.forward * 0.4f, Color.blue, 0.1f, false);
             if (Physics.Raycast(origin, myTransform.forward, out hit, 0.4f))
             {
                 moveDirection = Vector3.zero;
@@ -173,15 +174,17 @@ namespace MM
 
             Vector3 dir = moveDirection;
             dir.Normalize();
-            origin += dir * groundDetectionRayDistance;
+            origin += dir * groundDetectionRayDistance; // ?
             targetPosition = myTransform.position;
             Debug.DrawRay(origin, -Vector3.up * minimumDistanceNeededToBeginFall, Color.red, 0.1f, false);
             if (Physics.Raycast(origin, -Vector3.up, out hit, minimumDistanceNeededToBeginFall, ignoreForGroundCheck))
             {
-                normalVector = hit.normal;
-                Vector3 tp = hit.point;
+                // If we are not fully in collision with the ground, but not far off the ground
+                // we move to fully collide with the ground
                 playerManager.isGrounded = true;
-                targetPosition.y = tp.y;
+                targetPosition.y = hit.point.y;
+                normalVector = hit.normal;
+
                 if (playerManager.isInAir)
                 {
                     if (inAirTimer > 0.5f)
@@ -198,33 +201,29 @@ namespace MM
                     playerManager.isInAir = false;
                 }
             }
-            else
+            else // Otherwise we start falling
             {
-                if (playerManager.isGrounded)
-                {
-                    playerManager.isGrounded = false;
-                }
+                playerManager.isGrounded = false;
 
                 if (!playerManager.isInAir)
                 {
                     if (!playerManager.isInteracting)
                     {
-                        // animationHandler.PlayTargetAnimation("Falling", true);
-                        
+                        // animationHandler.PlayTargetAnimation("Falling", true);                        
                     }
-                    Vector3 vel = rigidbody.velocity;
-                    vel.Normalize();
-                    rigidbody.velocity = vel * movementSpeed / 2f;
+                    Vector3 velocity = rigidbody.velocity;
+                    velocity.Normalize();
+                    rigidbody.velocity = velocity * movementSpeed / 2f;
                     playerManager.isInAir = true;
-                }
-                
+                }                
             }
 
             if (playerManager.isGrounded)
             {
                 if (playerManager.isInteracting || inputHandler.moveAmount > 0)
                 {
-                    myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta);
+                    Debug.Log("Delta: " + delta);
+                    myTransform.position = Vector3.Lerp(myTransform.position, targetPosition, delta * 10);
                 }
                 else
                 {

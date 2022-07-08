@@ -337,6 +337,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6485370062772931190, guid: 1e59ab2d1da7d5b4ca1b79c5f227fb4c, type: 3}
   m_PrefabInstance: {fileID: 1521974754}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &264643524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 264643525}
+  m_Layer: 0
+  m_Name: Left Hand Override
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &264643525
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264643524}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 291839563}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &291839562 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3668086056121675338, guid: 0604786e7333c38419c1d1baaf4c6707, type: 3}
+  m_PrefabInstance: {fileID: 1196763954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &291839563 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3780837713738550241, guid: 0604786e7333c38419c1d1baaf4c6707, type: 3}
+  m_PrefabInstance: {fileID: 1196763954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &291839564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291839562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33e58bda4293844fab9b737dcc81356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentOverride: {fileID: 264643525}
+  isLeftHandSlot: 1
+  isRightHandSlot: 0
+  currentWeaponModel: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -885,6 +942,7 @@ GameObject:
   - component: {fileID: 1402198078}
   - component: {fileID: 1402198081}
   - component: {fileID: 1402198077}
+  - component: {fileID: 1402198082}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -984,7 +1042,7 @@ CapsuleCollider:
   m_Radius: 0.3
   m_Height: 1.6
   m_Direction: 1
-  m_Center: {x: 0, y: 0.99, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &1402198081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1001,6 +1059,20 @@ MonoBehaviour:
   isSprinting: 0
   isInAir: 0
   isGrounded: 0
+--- !u!114 &1402198082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402198075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9c240c425421d247b16b7470ce65486, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightWeapon: {fileID: 11400000, guid: 9e475123c28845f4ca482d8cbabe10f7, type: 2}
+  leftWeapon: {fileID: 11400000, guid: 9e475123c28845f4ca482d8cbabe10f7, type: 2}
 --- !u!1001 &1521974754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1218,6 +1290,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6485370062772931190, guid: 1e59ab2d1da7d5b4ca1b79c5f227fb4c, type: 3}
   m_PrefabInstance: {fileID: 1167303387}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1912888792 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6392886965815168175, guid: 0604786e7333c38419c1d1baaf4c6707, type: 3}
+  m_PrefabInstance: {fileID: 1196763954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1912888793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2221872609835778665, guid: 0604786e7333c38419c1d1baaf4c6707, type: 3}
+  m_PrefabInstance: {fileID: 1196763954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1912888794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1912888792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f33e58bda4293844fab9b737dcc81356, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentOverride: {fileID: 1912888793}
+  isLeftHandSlot: 0
+  isRightHandSlot: 1
+  currentWeaponModel: {fileID: 0}
 --- !u!1 &1969014550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,3 +1453,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2137431710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137431707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6ebf20e9c60114caeb07726eb1e45b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
