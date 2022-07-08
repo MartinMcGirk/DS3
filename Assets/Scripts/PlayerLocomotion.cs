@@ -24,11 +24,20 @@ namespace MM
 
         private bool jumping = false;
 
-        [Header("Movement Stats")] 
+        [Header("Ground and Air detection stats")] 
+        [SerializeField] float groundDetectionRayStartPoint = 0.5f;
+        [SerializeField] float minimumDistanceNeededToBeginFall = 1f;
+        [SerializeField] float groundDetectionRayDistance = 0.2f;
+        
+        LayerMask ignoreForGroundCheck;
+
+        public float inAirTimer;
+
+        [Header("Movement Stats")]
         [SerializeField] float movementSpeed = 5;
         [SerializeField] float sprintSpeed = 7;
         [SerializeField] float rotationSpeed = 10;
-        
+        [SerializeField] float fallingSpeed = 45;
         
         void Start()
         {

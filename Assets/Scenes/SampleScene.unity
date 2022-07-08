@@ -924,9 +924,14 @@ MonoBehaviour:
   rigidbody: {fileID: 0}
   normalCamera: {fileID: 0}
   jumpSpeed: 10
+  groundDetectionRayStartPoint: 0.5
+  minimumDistanceNeededToBeginFall: 1
+  groundDetectionRayDistance: 0.2
+  inAirTimer: 0
   movementSpeed: 5
   sprintSpeed: 7
   rotationSpeed: 10
+  fallingSpeed: 45
 --- !u!114 &1402198078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,9 +980,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.3
-  m_Height: 1.8
+  m_Height: 1.6
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: 0, y: 0.99, z: 0}
 --- !u!114 &1402198081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -992,6 +997,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isInteracting: 0
   isSprinting: 0
+  isInAir: 0
+  isGrounded: 0
 --- !u!1001 &1521974754
 PrefabInstance:
   m_ObjectHideFlags: 0

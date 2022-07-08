@@ -11,8 +11,12 @@ public class PlayerManager : MonoBehaviour
     PlayerLocomotion playerLocomotion;
 
     public bool isInteracting;
+    
+    [Header("Player Flags")]
     public bool isSprinting;
-
+    public bool isInAir;
+    public bool isGrounded;
+    
     void Start()
     {
         inputHandler = GetComponent<InputHandler>();
